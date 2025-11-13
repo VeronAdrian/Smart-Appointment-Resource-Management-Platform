@@ -2,3 +2,4 @@ com\smartplatform\user\views\MainView.class
 com\smartplatform\user\UserServiceApplication.class
 com\smartplatform\user\views\DashboardView.class
 com\smartplatform\user\views\LoginView.class
+com\smartplatform\user\views\RegistrationView.class

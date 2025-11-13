@@ -20,6 +20,7 @@ public class LoginView extends VerticalLayout {
                 Notification.show("Enter a username");
             }
         });
-        add(username, password, login);
+        Button registerBtn = new Button("Register", e -> getUI().ifPresent(ui -> ui.navigate("register")));
+        add(username, password, login, registerBtn);
     }
 }

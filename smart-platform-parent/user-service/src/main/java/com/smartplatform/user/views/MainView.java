@@ -11,5 +11,6 @@ public class MainView extends VerticalLayout {
         add(new H1("Welcome to Smart Appointment & Resource Management Platform"));
         add(new Button("Login", e -> getUI().ifPresent(ui -> ui.navigate("login"))));
         add(new Button("Dashboard", e -> getUI().ifPresent(ui -> ui.navigate("dashboard"))));
+        add(new Button("Register", e -> getUI().ifPresent(ui -> ui.navigate("register"))));
     }
 }
