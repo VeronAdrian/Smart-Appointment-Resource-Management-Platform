@@ -1,41 +1,22 @@
-# System Requirements for Smart Appointment & Resource Management Platform
+# Requirements
 
-## Developer/Build Prerequisites
-
-- **Java JDK 21** or later
-  - Required for compiling and running backend and Vaadin UI
-  - Set `JAVA_HOME` environment variable to your JDK path
+- **Java Development Kit (JDK) 21 or newer**
+  - Confirm with `javac -version`
 - **Apache Maven 3.9+**
-  - Used for building and managing dependencies
-  - Make sure `mvn` is available in your system PATH
-- **Git** (for version control)
-- **Internet Connection**
-  - For automatic Maven dependency downloading
+  - Confirm with `mvn -version`
+- **Web Browser** (recommended: Chrome, Firefox, Edge)
+- **No PostgreSQL or Redis required for in-memory demo**
+- **No Node.js/npm required for Vaadin-based Java UI**
 
-## Optional for Full Local Development
-- **PostgreSQL Database** (for production/reliable dev/testing)
-- **Docker** and **Docker Compose**
-  - To easily spin up databases, caches, and more
-- **Redis**
-  - (Future) For Caching and Session management
-- **(Planned) Kafka or RabbitMQ**
-  - For event/messaging features
-- **Modern web browser** (Chrome, Edge, Firefox, etc.)
-  - To access and test the Vaadin Java UI
+# How to Run
+- Clone/download the repo
+- In terminal:
+  - `cd smart-platform-parent/user-service`
+  - `mvn spring-boot:run`
+  - Open [http://localhost:8080](http://localhost:8080) in a browser
+- Log in as:
+  - admin/admin (ADMIN), staff/staff (STAFF), client/client (CLIENT), super/super (SUPER_ADMIN)
 
-## Directory Structure
-
-- `smart-platform-parent/`: The Maven parent containing all modules (services)
-- Each service module (user-service, appointment-service, etc.) contains its own source and `pom.xml`
-
----
-
-## How to Check Java/Maven Setup
-
-Open a command prompt or terminal and run:
-
-```
-java -version
-javac -version
-mvn -version
-```
+# Optional Tools
+- Recommended IDE: IntelliJ IDEA, Eclipse, VS Code (with Java support)
+- Git (for version tracking)
