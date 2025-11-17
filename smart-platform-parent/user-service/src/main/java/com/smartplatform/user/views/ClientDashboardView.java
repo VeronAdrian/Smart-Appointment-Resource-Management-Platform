@@ -1,5 +1,6 @@
 package com.smartplatform.user.views;
 
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class ClientDashboardView extends VerticalLayout implements BeforeEnterObserver {
     public ClientDashboardView() {
         add(new H2("Client Dashboard: Welcome, Client!"));
+        add(new Button("Book Appointment", e -> getUI().ifPresent(ui -> ui.navigate("client-booking"))));
     }
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
