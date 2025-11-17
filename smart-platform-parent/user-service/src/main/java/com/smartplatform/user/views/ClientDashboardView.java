@@ -14,6 +14,7 @@ public class ClientDashboardView extends VerticalLayout implements BeforeEnterOb
     public ClientDashboardView() {
         add(new H2("Client Dashboard: Welcome, Client!"));
         add(new Button("Book Appointment", e -> getUI().ifPresent(ui -> ui.navigate("client-booking"))));
+        add(new Button("Reserve Resource", e -> getUI().ifPresent(ui -> ui.navigate("resource-reservation"))));
     }
     @Override
     public void beforeEnter(BeforeEnterEvent event) {

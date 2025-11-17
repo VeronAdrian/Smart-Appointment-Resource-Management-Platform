@@ -14,6 +14,8 @@ public class StaffDashboardView extends VerticalLayout implements BeforeEnterObs
     public StaffDashboardView() {
         add(new H2("Staff Dashboard: Welcome, Staff!"));
         add(new Button("Define Availability Slots", e -> getUI().ifPresent(ui -> ui.navigate("staff-availability"))));
+        add(new Button("Resource Management", e -> getUI().ifPresent(ui -> ui.navigate("resource-management"))));
+        add(new Button("Approve Reservations", e -> getUI().ifPresent(ui -> ui.navigate("resource-approval"))));
     }
     @Override
     public void beforeEnter(BeforeEnterEvent event) {

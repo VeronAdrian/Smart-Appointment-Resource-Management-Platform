@@ -1,5 +1,6 @@
 package com.smartplatform.user.views;
 
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class SuperDashboardView extends VerticalLayout implements BeforeEnterObserver {
     public SuperDashboardView() {
         add(new H2("Super Admin Dashboard: Welcome, Super Admin!"));
+        add(new Button("Resource Analytics", e -> getUI().ifPresent(ui -> ui.navigate("resource-analytics"))));
     }
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
