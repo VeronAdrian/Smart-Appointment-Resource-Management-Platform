@@ -9,31 +9,56 @@ public class UserService {
     static {
         preloadSampleUsers();
     }
-    public static boolean register(String username, String password, String email, Set<Role> roles) {
-        if (findByUsername(username) != null || findByEmail(email) != null) {
+    public static boolean register(String username, String password, String email, Set<Role> roles, String tenantId) {
+        if (findByUsername(username, tenantId) != null || findByEmail(email, tenantId) != null) {
             return false;
         }
-        users.add(new User(username, password, email, roles));
+        users.add(new User(username, password, email, roles, tenantId));
         return true;
     }
     public static User login(String username, String password) {
-        User user = findByUsername(username);
+        String tenantId = TenantContext.getCurrentTenantId();
+        User user = findByUsername(username, tenantId);
         if (user != null && user.getPassword().equals(password)) {
             return user;
         }
         return null;
     }
     public static User findByUsername(String username) {
-        return users.stream().filter(u -> u.getUsername().equalsIgnoreCase(username)).findFirst().orElse(null);
+        String tenantId = TenantContext.getCurrentTenantId();
+        return findByUsername(username, tenantId);
+    }
+    public static User findByUsername(String username, String tenantId) {
+        return users.stream()
+                .filter(u -> u.getUsername().equalsIgnoreCase(username))
+                .filter(u -> tenantId == null || u.getTenantId() == null || u.getTenantId().equals(tenantId))
+                .findFirst()
+                .orElse(null);
     }
     public static User findByEmail(String email) {
-        return users.stream().filter(u -> u.getEmail().equalsIgnoreCase(email)).findFirst().orElse(null);
+        String tenantId = TenantContext.getCurrentTenantId();
+        return findByEmail(email, tenantId);
+    }
+    public static User findByEmail(String email, String tenantId) {
+        return users.stream()
+                .filter(u -> u.getEmail().equalsIgnoreCase(email))
+                .filter(u -> tenantId == null || u.getTenantId() == null || u.getTenantId().equals(tenantId))
+                .findFirst()
+                .orElse(null);
+    }
+    public static List<User> getUsersByTenant(String tenantId) {
+        return users.stream()
+                .filter(u -> u.getTenantId() != null && u.getTenantId().equals(tenantId))
+                .collect(java.util.stream.Collectors.toList());
     }
     public static void preloadSampleUsers() {
         users.clear();
-        users.add(new User("admin", "admin", "admin@example.com", Set.of(Role.ADMIN)));
-        users.add(new User("staff", "staff", "staff@example.com", Set.of(Role.STAFF)));
-        users.add(new User("client", "client", "client@example.com", Set.of(Role.CLIENT)));
-        users.add(new User("super", "super", "super@example.com", Set.of(Role.SUPER_ADMIN)));
+        var defaultTenant = TenantService.getDefaultTenant();
+        String defaultTenantId = defaultTenant != null ? defaultTenant.getId() : null;
+        users.add(new User("admin", "admin", "admin@example.com", Set.of(Role.ADMIN), defaultTenantId));
+        users.add(new User("staff", "staff", "staff@example.com", Set.of(Role.STAFF), defaultTenantId));
+        users.add(new User("client", "client", "client@example.com", Set.of(Role.CLIENT), defaultTenantId));
+        // Super Admin is tenant-agnostic (can access all tenants)
+        users.add(new User("super", "super", "super@example.com", Set.of(Role.SUPER_ADMIN), null));
     }
 }

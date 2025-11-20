@@ -15,10 +15,11 @@ public class AppointmentService {
         if (slot == null || slot.isBooked()) {
             return null; // Slot not found or already booked
         }
-        if (checkConflict(staffUsername, appointmentDateTime)) {
+        String tenantId = slot.getTenantId();
+        if (checkConflict(staffUsername, appointmentDateTime, tenantId)) {
             return null; // Conflict detected
         }
-        Appointment appointment = new Appointment(clientUsername, staffUsername, slotId, appointmentDateTime);
+        Appointment appointment = new Appointment(clientUsername, staffUsername, slotId, appointmentDateTime, tenantId);
         appointments.add(appointment);
         slot.setBooked(true);
         NotificationService.notifyAppointmentBooked(
@@ -31,18 +32,25 @@ public class AppointmentService {
     }
 
     public static List<Appointment> getAllAppointments() {
-        return new ArrayList<>(appointments);
+        String tenantId = TenantContext.getCurrentTenantId();
+        return appointments.stream()
+                .filter(apt -> tenantId == null || apt.getTenantId() == null || apt.getTenantId().equals(tenantId))
+                .collect(Collectors.toList());
     }
 
     public static List<Appointment> getAppointmentsByClient(String clientUsername) {
+        String tenantId = TenantContext.getCurrentTenantId();
         return appointments.stream()
                 .filter(apt -> apt.getClientUsername().equalsIgnoreCase(clientUsername))
+                .filter(apt -> tenantId == null || apt.getTenantId() == null || apt.getTenantId().equals(tenantId))
                 .collect(Collectors.toList());
     }
 
     public static List<Appointment> getAppointmentsByStaff(String staffUsername) {
+        String tenantId = TenantContext.getCurrentTenantId();
         return appointments.stream()
                 .filter(apt -> apt.getStaffUsername().equalsIgnoreCase(staffUsername))
+                .filter(apt -> tenantId == null || apt.getTenantId() == null || apt.getTenantId().equals(tenantId))
                 .collect(Collectors.toList());
     }
 
@@ -68,9 +76,10 @@ public class AppointmentService {
         return false;
     }
 
-    private static boolean checkConflict(String staffUsername, LocalDateTime appointmentDateTime) {
+    private static boolean checkConflict(String staffUsername, LocalDateTime appointmentDateTime, String tenantId) {
         return appointments.stream()
                 .filter(apt -> apt.getStaffUsername().equalsIgnoreCase(staffUsername))
+                .filter(apt -> tenantId == null || apt.getTenantId() == null || apt.getTenantId().equals(tenantId))
                 .filter(apt -> !apt.getStatus().equals("CANCELLED"))
                 .anyMatch(apt -> {
                     LocalDateTime aptTime = apt.getAppointmentDateTime();

@@ -7,12 +7,14 @@ public class User {
     private String password;
     private String email;
     private Set<Role> roles;
+    private String tenantId; // Multi-tenancy: discriminator column
 
-    public User(String username, String password, String email, Set<Role> roles) {
+    public User(String username, String password, String email, Set<Role> roles, String tenantId) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.roles = roles;
+        this.tenantId = tenantId;
     }
 
     public String getUsername() { return username; }
@@ -26,4 +28,7 @@ public class User {
 
     public Set<Role> getRoles() { return roles; }
     public void setRoles(Set<Role> roles) { this.roles = roles; }
+
+    public String getTenantId() { return tenantId; }
+    public void setTenantId(String tenantId) { this.tenantId = tenantId; }
 }

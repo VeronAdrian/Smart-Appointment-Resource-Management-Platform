@@ -37,11 +37,13 @@ public class ResourceManagementView extends VerticalLayout implements BeforeEnte
                 Notification.show("Name and Type are required");
                 return;
             }
+            String tenantId = com.smartplatform.user.service.TenantContext.getCurrentTenantId();
             Resource resource = ResourceService.createResource(
                 nameField.getValue(),
                 typeField.getValue(),
                 descriptionField.getValue(),
-                maxHoursField.getValue() != null ? maxHoursField.getValue() : 2
+                maxHoursField.getValue() != null ? maxHoursField.getValue() : 2,
+                tenantId
             );
             if (resource != null) {
                 Notification.show("Resource created: " + resource.getName());

@@ -11,8 +11,9 @@ public class Appointment {
     private LocalDateTime appointmentDateTime;
     private String status; // PENDING, CONFIRMED, CANCELLED
     private String notes;
+    private String tenantId; // Multi-tenancy: discriminator column
 
-    public Appointment(String clientUsername, String staffUsername, String slotId, LocalDateTime appointmentDateTime) {
+    public Appointment(String clientUsername, String staffUsername, String slotId, LocalDateTime appointmentDateTime, String tenantId) {
         this.id = UUID.randomUUID().toString();
         this.clientUsername = clientUsername;
         this.staffUsername = staffUsername;
@@ -20,6 +21,7 @@ public class Appointment {
         this.appointmentDateTime = appointmentDateTime;
         this.status = "PENDING";
         this.notes = "";
+        this.tenantId = tenantId;
     }
 
     public String getId() { return id; }
@@ -42,5 +44,8 @@ public class Appointment {
 
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }
+
+    public String getTenantId() { return tenantId; }
+    public void setTenantId(String tenantId) { this.tenantId = tenantId; }
 }
 

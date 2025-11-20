@@ -15,9 +15,10 @@ public class ResourceReservation {
     private String status; // PENDING, APPROVED, REJECTED, COMPLETED, CANCELLED
     private String notes;
     private String approvedBy; // Admin/Staff who approved
+    private String tenantId; // Multi-tenancy: discriminator column
 
     public ResourceReservation(String resourceId, String resourceName, String userId, String userName, 
-                               LocalDateTime startDateTime, LocalDateTime endDateTime, String priority) {
+                               LocalDateTime startDateTime, LocalDateTime endDateTime, String priority, String tenantId) {
         this.id = UUID.randomUUID().toString();
         this.resourceId = resourceId;
         this.resourceName = resourceName;
@@ -29,6 +30,7 @@ public class ResourceReservation {
         this.status = "PENDING";
         this.notes = "";
         this.approvedBy = null;
+        this.tenantId = tenantId;
     }
 
     public String getId() { return id; }
@@ -63,5 +65,8 @@ public class ResourceReservation {
 
     public String getApprovedBy() { return approvedBy; }
     public void setApprovedBy(String approvedBy) { this.approvedBy = approvedBy; }
+
+    public String getTenantId() { return tenantId; }
+    public void setTenantId(String tenantId) { this.tenantId = tenantId; }
 }
 

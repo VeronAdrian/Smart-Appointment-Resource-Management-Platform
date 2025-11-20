@@ -1,5 +1,8 @@
 # Requirements
 
+## Essential Requirements
+
+### Development Environment
 - **Java Development Kit (JDK) 21 or newer**
   - Confirm with `javac -version`
 - **Apache Maven 3.9+**

@@ -12,19 +12,24 @@ public class ResourceService {
     private static final List<ResourceReservation> reservations = new ArrayList<>();
 
     // Resource Management
-    public static Resource createResource(String name, String type, String description, int maxReservationHours) {
-        Resource resource = new Resource(name, type, description, maxReservationHours);
+    public static Resource createResource(String name, String type, String description, int maxReservationHours, String tenantId) {
+        Resource resource = new Resource(name, type, description, maxReservationHours, tenantId);
         resources.add(resource);
         return resource;
     }
 
     public static List<Resource> getAllResources() {
-        return new ArrayList<>(resources);
+        String tenantId = TenantContext.getCurrentTenantId();
+        return resources.stream()
+                .filter(r -> tenantId == null || r.getTenantId() == null || r.getTenantId().equals(tenantId))
+                .collect(Collectors.toList());
     }
 
     public static Resource findResourceById(String resourceId) {
+        String tenantId = TenantContext.getCurrentTenantId();
         return resources.stream()
                 .filter(r -> r.getId().equals(resourceId))
+                .filter(r -> tenantId == null || r.getTenantId() == null || r.getTenantId().equals(tenantId))
                 .findFirst()
                 .orElse(null);
     }
@@ -41,23 +46,29 @@ public class ResourceService {
         if (resource == null) {
             return null;
         }
-        if (checkConflict(resourceId, startDateTime, endDateTime)) {
+        String tenantId = resource.getTenantId();
+        if (checkConflict(resourceId, startDateTime, endDateTime, tenantId)) {
             return null; // Conflict detected
         }
         ResourceReservation reservation = new ResourceReservation(
-            resourceId, resource.getName(), userId, userName, startDateTime, endDateTime, priority
+            resourceId, resource.getName(), userId, userName, startDateTime, endDateTime, priority, tenantId
         );
         reservations.add(reservation);
         return reservation;
     }
 
     public static List<ResourceReservation> getAllReservations() {
-        return new ArrayList<>(reservations);
+        String tenantId = TenantContext.getCurrentTenantId();
+        return reservations.stream()
+                .filter(r -> tenantId == null || r.getTenantId() == null || r.getTenantId().equals(tenantId))
+                .collect(Collectors.toList());
     }
 
     public static List<ResourceReservation> getPendingReservations() {
+        String tenantId = TenantContext.getCurrentTenantId();
         return reservations.stream()
                 .filter(r -> r.getStatus().equals("PENDING"))
+                .filter(r -> tenantId == null || r.getTenantId() == null || r.getTenantId().equals(tenantId))
                 .sorted((r1, r2) -> {
                     int priorityOrder = getPriorityOrder(r2.getPriority()) - getPriorityOrder(r1.getPriority());
                     if (priorityOrder != 0) return priorityOrder;
@@ -67,14 +78,18 @@ public class ResourceService {
     }
 
     public static List<ResourceReservation> getReservationsByUser(String userId) {
+        String tenantId = TenantContext.getCurrentTenantId();
         return reservations.stream()
                 .filter(r -> r.getUserId().equals(userId))
+                .filter(r -> tenantId == null || r.getTenantId() == null || r.getTenantId().equals(tenantId))
                 .collect(Collectors.toList());
     }
 
     public static List<ResourceReservation> getReservationsByResource(String resourceId) {
+        String tenantId = TenantContext.getCurrentTenantId();
         return reservations.stream()
                 .filter(r -> r.getResourceId().equals(resourceId))
+                .filter(r -> tenantId == null || r.getTenantId() == null || r.getTenantId().equals(tenantId))
                 .collect(Collectors.toList());
     }
 
@@ -135,9 +150,10 @@ public class ResourceService {
         return false;
     }
 
-    private static boolean checkConflict(String resourceId, LocalDateTime start, LocalDateTime end) {
+    private static boolean checkConflict(String resourceId, LocalDateTime start, LocalDateTime end, String tenantId) {
         return reservations.stream()
                 .filter(r -> r.getResourceId().equals(resourceId))
+                .filter(r -> tenantId == null || r.getTenantId() == null || r.getTenantId().equals(tenantId))
                 .filter(r -> r.getStatus().equals("APPROVED") || r.getStatus().equals("PENDING"))
                 .anyMatch(r -> {
                     LocalDateTime rStart = r.getStartDateTime();

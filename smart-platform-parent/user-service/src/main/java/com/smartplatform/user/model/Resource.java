@@ -9,14 +9,16 @@ public class Resource {
     private String description;
     private boolean isAvailable;
     private int maxReservationHours;
+    private String tenantId; // Multi-tenancy: discriminator column
 
-    public Resource(String name, String type, String description, int maxReservationHours) {
+    public Resource(String name, String type, String description, int maxReservationHours, String tenantId) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.type = type;
         this.description = description;
         this.isAvailable = true;
         this.maxReservationHours = maxReservationHours;
+        this.tenantId = tenantId;
     }
 
     public String getId() { return id; }
@@ -36,5 +38,8 @@ public class Resource {
 
     public int getMaxReservationHours() { return maxReservationHours; }
     public void setMaxReservationHours(int maxReservationHours) { this.maxReservationHours = maxReservationHours; }
+
+    public String getTenantId() { return tenantId; }
+    public void setTenantId(String tenantId) { this.tenantId = tenantId; }
 }
 

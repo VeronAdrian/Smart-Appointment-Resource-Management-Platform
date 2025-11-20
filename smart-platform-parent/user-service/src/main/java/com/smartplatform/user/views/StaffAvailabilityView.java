@@ -42,7 +42,8 @@ public class StaffAvailabilityView extends VerticalLayout implements BeforeEnter
             LocalTime endTime = LocalTime.of(endHour.getValue() != null ? endHour.getValue() : 10, endMinute.getValue() != null ? endMinute.getValue() : 0);
             LocalDateTime startDateTime = LocalDateTime.of(date, startTime);
             LocalDateTime endDateTime = LocalDateTime.of(date, endTime);
-            AvailabilitySlot slot = AvailabilityService.createSlot(staffUsername, startDateTime, endDateTime);
+            String tenantId = com.smartplatform.user.service.TenantContext.getCurrentTenantId();
+            AvailabilitySlot slot = AvailabilityService.createSlot(staffUsername, startDateTime, endDateTime, tenantId);
             if (slot != null) {
                 Notification.show("Availability slot created successfully!");
                 datePicker.clear();
