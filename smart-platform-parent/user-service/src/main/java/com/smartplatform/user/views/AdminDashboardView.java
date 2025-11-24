@@ -16,6 +16,7 @@ public class AdminDashboardView extends VerticalLayout implements BeforeEnterObs
         add(new Button("Resource Management", e -> getUI().ifPresent(ui -> ui.navigate("resource-management"))));
         add(new Button("Approve Reservations", e -> getUI().ifPresent(ui -> ui.navigate("resource-approval"))));
         add(new Button("Resource Analytics", e -> getUI().ifPresent(ui -> ui.navigate("resource-analytics"))));
+        add(new Button("Analytics Dashboard", e -> getUI().ifPresent(ui -> ui.navigate("analytics-dashboard"))));
     }
     @Override
     public void beforeEnter(BeforeEnterEvent event) {

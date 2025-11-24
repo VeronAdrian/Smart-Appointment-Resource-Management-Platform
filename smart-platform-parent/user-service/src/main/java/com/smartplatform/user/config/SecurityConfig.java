@@ -35,6 +35,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeHttpRequests(authz -> authz
+                .requestMatchers("/api/analytics/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+                .requestMatchers("/analytics-dashboard.html").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+                .requestMatchers("/static/**").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(withDefaults())

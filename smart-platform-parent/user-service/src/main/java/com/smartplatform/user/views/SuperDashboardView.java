@@ -15,6 +15,7 @@ public class SuperDashboardView extends VerticalLayout implements BeforeEnterObs
         add(new H2("Super Admin Dashboard: Welcome, Super Admin!"));
         add(new Button("Tenant Management", e -> getUI().ifPresent(ui -> ui.navigate("tenant-management"))));
         add(new Button("Resource Analytics", e -> getUI().ifPresent(ui -> ui.navigate("resource-analytics"))));
+        add(new Button("Analytics Dashboard", e -> getUI().ifPresent(ui -> ui.navigate("analytics-dashboard"))));
     }
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
