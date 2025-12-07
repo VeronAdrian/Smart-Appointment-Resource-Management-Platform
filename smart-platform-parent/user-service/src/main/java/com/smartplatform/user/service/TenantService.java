@@ -3,7 +3,6 @@ package com.smartplatform.user.service;
 import com.smartplatform.user.model.Tenant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TenantService {
     private static final List<Tenant> tenants = new ArrayList<>();
@@ -28,10 +27,7 @@ public class TenantService {
     }
 
     public static Tenant findTenantById(String tenantId) {
-        return tenants.stream()
-                .filter(t -> t.getId().equals(tenantId))
-                .findFirst()
-                .orElse(null);
+        return tenants.stream().filter(t -> t.getId().equals(tenantId)).findFirst().orElse(null);
     }
 
     public static Tenant findByDomain(String domain) {
@@ -58,4 +54,3 @@ public class TenantService {
         return tenants.isEmpty() ? null : tenants.get(0);
     }
 }
-

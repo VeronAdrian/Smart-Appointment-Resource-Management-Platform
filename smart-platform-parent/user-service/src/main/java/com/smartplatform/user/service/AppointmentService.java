@@ -6,12 +6,23 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
+@RequiredArgsConstructor
 public class AppointmentService {
-    private static final List<Appointment> appointments = new ArrayList<>();
+    private final List<Appointment> appointments = new ArrayList<>();
+    private final UserService userService;
+    private final TenantContext tenantContext;
+    private final AvailabilityService availabilityService;
 
-    public static Appointment bookAppointment(String clientUsername, String staffUsername, String slotId, LocalDateTime appointmentDateTime) {
-        AvailabilitySlot slot = AvailabilityService.findSlotById(slotId);
+    public Appointment bookAppointment(
+            String clientUsername,
+            String staffUsername,
+            String slotId,
+            LocalDateTime appointmentDateTime) {
+        AvailabilitySlot slot = availabilityService.findSlotById(slotId);
         if (slot == null || slot.isBooked()) {
             return null; // Slot not found or already booked
         }
@@ -19,78 +30,91 @@ public class AppointmentService {
         if (checkConflict(staffUsername, appointmentDateTime, tenantId)) {
             return null; // Conflict detected
         }
-        Appointment appointment = new Appointment(clientUsername, staffUsername, slotId, appointmentDateTime, tenantId);
+        Appointment appointment = new Appointment(
+                clientUsername, staffUsername, slotId, appointmentDateTime, tenantId);
         appointments.add(appointment);
         slot.setBooked(true);
         NotificationService.notifyAppointmentBooked(
-            getClientEmail(clientUsername), 
-            null, 
-            staffUsername, 
-            appointmentDateTime.toString()
-        );
+                getClientEmail(clientUsername),
+                null,
+                staffUsername,
+                appointmentDateTime.toString());
         return appointment;
     }
 
-    public static List<Appointment> getAllAppointments() {
-        String tenantId = TenantContext.getCurrentTenantId();
+    public List<Appointment> getAllAppointments() {
+        String tenantId = tenantContext.getCurrentTenantId();
         return appointments.stream()
-                .filter(apt -> tenantId == null || apt.getTenantId() == null || apt.getTenantId().equals(tenantId))
+                .filter(
+                        apt -> tenantId == null
+                                || apt.getTenantId() == null
+                                || apt.getTenantId().equals(tenantId))
                 .collect(Collectors.toList());
     }
 
-    public static List<Appointment> getAppointmentsByClient(String clientUsername) {
-        String tenantId = TenantContext.getCurrentTenantId();
+    public List<Appointment> getAppointmentsByClient(String clientUsername) {
+        String tenantId = tenantContext.getCurrentTenantId();
         return appointments.stream()
                 .filter(apt -> apt.getClientUsername().equalsIgnoreCase(clientUsername))
-                .filter(apt -> tenantId == null || apt.getTenantId() == null || apt.getTenantId().equals(tenantId))
+                .filter(
+                        apt -> tenantId == null
+                                || apt.getTenantId() == null
+                                || apt.getTenantId().equals(tenantId))
                 .collect(Collectors.toList());
     }
 
-    public static List<Appointment> getAppointmentsByStaff(String staffUsername) {
-        String tenantId = TenantContext.getCurrentTenantId();
+    public List<Appointment> getAppointmentsByStaff(String staffUsername) {
+        String tenantId = tenantContext.getCurrentTenantId();
         return appointments.stream()
                 .filter(apt -> apt.getStaffUsername().equalsIgnoreCase(staffUsername))
-                .filter(apt -> tenantId == null || apt.getTenantId() == null || apt.getTenantId().equals(tenantId))
+                .filter(
+                        apt -> tenantId == null
+                                || apt.getTenantId() == null
+                                || apt.getTenantId().equals(tenantId))
                 .collect(Collectors.toList());
     }
 
-    public static boolean cancelAppointment(String appointmentId) {
+    public boolean cancelAppointment(String appointmentId) {
         Appointment appointment = appointments.stream()
                 .filter(apt -> apt.getId().equals(appointmentId))
                 .findFirst()
                 .orElse(null);
         if (appointment != null) {
             appointment.setStatus("CANCELLED");
-            AvailabilitySlot slot = AvailabilityService.findSlotById(appointment.getSlotId());
+            AvailabilitySlot slot = availabilityService.findSlotById(appointment.getSlotId());
             if (slot != null) {
                 slot.setBooked(false);
             }
             NotificationService.notifyAppointmentCancelled(
-                getClientEmail(appointment.getClientUsername()),
-                null,
-                appointment.getStaffUsername(),
-                appointment.getAppointmentDateTime().toString()
-            );
+                    getClientEmail(appointment.getClientUsername()),
+                    null,
+                    appointment.getStaffUsername(),
+                    appointment.getAppointmentDateTime().toString());
             return true;
         }
         return false;
     }
 
-    private static boolean checkConflict(String staffUsername, LocalDateTime appointmentDateTime, String tenantId) {
+    private boolean checkConflict(
+            String staffUsername, LocalDateTime appointmentDateTime, String tenantId) {
         return appointments.stream()
                 .filter(apt -> apt.getStaffUsername().equalsIgnoreCase(staffUsername))
-                .filter(apt -> tenantId == null || apt.getTenantId() == null || apt.getTenantId().equals(tenantId))
+                .filter(
+                        apt -> tenantId == null
+                                || apt.getTenantId() == null
+                                || apt.getTenantId().equals(tenantId))
                 .filter(apt -> !apt.getStatus().equals("CANCELLED"))
-                .anyMatch(apt -> {
-                    LocalDateTime aptTime = apt.getAppointmentDateTime();
-                    return aptTime.equals(appointmentDateTime) || 
-                           (aptTime.isBefore(appointmentDateTime.plusHours(1)) && aptTime.isAfter(appointmentDateTime.minusHours(1)));
-                });
+                .anyMatch(
+                        apt -> {
+                            LocalDateTime aptTime = apt.getAppointmentDateTime();
+                            return aptTime.equals(appointmentDateTime)
+                                    || (aptTime.isBefore(appointmentDateTime.plusHours(1))
+                                            && aptTime.isAfter(appointmentDateTime.minusHours(1)));
+                        });
     }
 
-    private static String getClientEmail(String username) {
-        var user = com.smartplatform.user.service.UserService.findByUsername(username);
+    private String getClientEmail(String username) {
+        var user = userService.findByUsername(username);
         return user != null ? user.getEmail() : username + "@example.com";
     }
-}
-
+};

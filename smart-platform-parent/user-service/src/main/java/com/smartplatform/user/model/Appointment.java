@@ -13,7 +13,12 @@ public class Appointment {
     private String notes;
     private String tenantId; // Multi-tenancy: discriminator column
 
-    public Appointment(String clientUsername, String staffUsername, String slotId, LocalDateTime appointmentDateTime, String tenantId) {
+    public Appointment(
+            String clientUsername,
+            String staffUsername,
+            String slotId,
+            LocalDateTime appointmentDateTime,
+            String tenantId) {
         this.id = UUID.randomUUID().toString();
         this.clientUsername = clientUsername;
         this.staffUsername = staffUsername;
@@ -24,28 +29,67 @@ public class Appointment {
         this.tenantId = tenantId;
     }
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String getId() {
+        return id;
+    }
 
-    public String getClientUsername() { return clientUsername; }
-    public void setClientUsername(String clientUsername) { this.clientUsername = clientUsername; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public String getStaffUsername() { return staffUsername; }
-    public void setStaffUsername(String staffUsername) { this.staffUsername = staffUsername; }
+    public String getClientUsername() {
+        return clientUsername;
+    }
 
-    public String getSlotId() { return slotId; }
-    public void setSlotId(String slotId) { this.slotId = slotId; }
+    public void setClientUsername(String clientUsername) {
+        this.clientUsername = clientUsername;
+    }
 
-    public LocalDateTime getAppointmentDateTime() { return appointmentDateTime; }
-    public void setAppointmentDateTime(LocalDateTime appointmentDateTime) { this.appointmentDateTime = appointmentDateTime; }
+    public String getStaffUsername() {
+        return staffUsername;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public void setStaffUsername(String staffUsername) {
+        this.staffUsername = staffUsername;
+    }
 
-    public String getNotes() { return notes; }
-    public void setNotes(String notes) { this.notes = notes; }
+    public String getSlotId() {
+        return slotId;
+    }
 
-    public String getTenantId() { return tenantId; }
-    public void setTenantId(String tenantId) { this.tenantId = tenantId; }
+    public void setSlotId(String slotId) {
+        this.slotId = slotId;
+    }
+
+    public LocalDateTime getAppointmentDateTime() {
+        return appointmentDateTime;
+    }
+
+    public void setAppointmentDateTime(LocalDateTime appointmentDateTime) {
+        this.appointmentDateTime = appointmentDateTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
 }
-

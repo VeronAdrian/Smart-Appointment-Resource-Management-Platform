@@ -2,63 +2,85 @@ package com.smartplatform.user.service;
 
 import com.smartplatform.user.model.Role;
 import com.smartplatform.user.model.User;
-import java.util.*;
+import com.smartplatform.user.repository.UserRepository;
+import jakarta.annotation.PostConstruct;
+import java.util.List;
+import java.util.Set;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Service for managing users. Refactored to use Spring Data JPA for persistence and dependency
+ * injection. Replaces static in-memory storage with a database-backed repository.
+ */
+@Service
+@RequiredArgsConstructor
 public class UserService {
-    private static final List<User> users = new ArrayList<>();
-    static {
-        preloadSampleUsers();
-    }
-    public static boolean register(String username, String password, String email, Set<Role> roles, String tenantId) {
-        if (findByUsername(username, tenantId) != null || findByEmail(email, tenantId) != null) {
+
+    private final UserRepository userRepository;
+
+    @Transactional
+    public boolean register(
+            String username, String password, String email, Set<Role> roles, String tenantId) {
+        if (userRepository.findByUsername(username).isPresent()
+                || userRepository.findByEmail(email).isPresent()) {
             return false;
         }
-        users.add(new User(username, password, email, roles, tenantId));
+        userRepository.save(new User(username, password, email, roles, tenantId));
         return true;
     }
-    public static User login(String username, String password) {
-        String tenantId = TenantContext.getCurrentTenantId();
-        User user = findByUsername(username, tenantId);
-        if (user != null && user.getPassword().equals(password)) {
-            return user;
+
+    public User login(String username, String password) {
+        // In a real app, use Spring Security. For now, simple check.
+        return userRepository
+                .findByUsername(username)
+                .filter(u -> u.getPassword().equals(password))
+                .orElse(null);
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
+
+    public List<User> getUsersByTenant(String tenantId) {
+        return userRepository.findByTenantId(tenantId);
+    }
+
+    @PostConstruct
+    public void preloadSampleUsers() {
+        if (userRepository.count() == 0) {
+            var defaultTenant = TenantService.getDefaultTenant();
+            String defaultTenantId = defaultTenant != null ? defaultTenant.getId() : null;
+
+            userRepository.save(
+                    new User(
+                            "admin",
+                            "admin",
+                            "admin@example.com",
+                            Set.of(Role.ADMIN),
+                            defaultTenantId));
+            userRepository.save(
+                    new User(
+                            "staff",
+                            "staff",
+                            "staff@example.com",
+                            Set.of(Role.STAFF),
+                            defaultTenantId));
+            userRepository.save(
+                    new User(
+                            "client",
+                            "client",
+                            "client@example.com",
+                            Set.of(Role.CLIENT),
+                            defaultTenantId));
+            userRepository.save(
+                    new User(
+                            "super", "super", "super@example.com", Set.of(Role.SUPER_ADMIN), null));
         }
-        return null;
-    }
-    public static User findByUsername(String username) {
-        String tenantId = TenantContext.getCurrentTenantId();
-        return findByUsername(username, tenantId);
-    }
-    public static User findByUsername(String username, String tenantId) {
-        return users.stream()
-                .filter(u -> u.getUsername().equalsIgnoreCase(username))
-                .filter(u -> tenantId == null || u.getTenantId() == null || u.getTenantId().equals(tenantId))
-                .findFirst()
-                .orElse(null);
-    }
-    public static User findByEmail(String email) {
-        String tenantId = TenantContext.getCurrentTenantId();
-        return findByEmail(email, tenantId);
-    }
-    public static User findByEmail(String email, String tenantId) {
-        return users.stream()
-                .filter(u -> u.getEmail().equalsIgnoreCase(email))
-                .filter(u -> tenantId == null || u.getTenantId() == null || u.getTenantId().equals(tenantId))
-                .findFirst()
-                .orElse(null);
-    }
-    public static List<User> getUsersByTenant(String tenantId) {
-        return users.stream()
-                .filter(u -> u.getTenantId() != null && u.getTenantId().equals(tenantId))
-                .collect(java.util.stream.Collectors.toList());
-    }
-    public static void preloadSampleUsers() {
-        users.clear();
-        var defaultTenant = TenantService.getDefaultTenant();
-        String defaultTenantId = defaultTenant != null ? defaultTenant.getId() : null;
-        users.add(new User("admin", "admin", "admin@example.com", Set.of(Role.ADMIN), defaultTenantId));
-        users.add(new User("staff", "staff", "staff@example.com", Set.of(Role.STAFF), defaultTenantId));
-        users.add(new User("client", "client", "client@example.com", Set.of(Role.CLIENT), defaultTenantId));
-        // Super Admin is tenant-agnostic (can access all tenants)
-        users.add(new User("super", "super", "super@example.com", Set.of(Role.SUPER_ADMIN), null));
     }
 }

@@ -1,19 +1,14 @@
 package com.smartplatform.user.config;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.elasticsearch.client.ClientConfiguration;
-import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfiguration;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.springframework.data.elasticsearch.client.RestClients;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.elasticsearch.client.ClientConfiguration;
 
-/**
- * Elasticsearch Configuration
- * Configures Spring Data Elasticsearch with the Elasticsearch server
+/* Elasticsearch Configuration Configures Spring Data Elasticsearch with the Elasticsearch server
  */
 @Configuration
-public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
+public class ElasticsearchConfig extends org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration {
 
     @Value("${elasticsearch.host:localhost}")
     private String host;
@@ -23,13 +18,11 @@ public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
 
     @Override
     @Bean
-    public RestHighLevelClient elasticsearchClient() {
-        final ClientConfiguration clientConfiguration = ClientConfiguration.builder()
+    public ClientConfiguration clientConfiguration() {
+        return ClientConfiguration.builder()
                 .connectedTo(host + ":" + port)
                 .withConnectTimeout(5000)
                 .withSocketTimeout(60000)
                 .build();
-
-        return RestClients.create(clientConfiguration).rest();
     }
 }

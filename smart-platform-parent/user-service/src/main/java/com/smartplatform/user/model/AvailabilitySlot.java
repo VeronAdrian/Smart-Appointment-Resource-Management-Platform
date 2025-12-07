@@ -11,7 +11,11 @@ public class AvailabilitySlot {
     private boolean isBooked;
     private String tenantId; // Multi-tenancy: discriminator column
 
-    public AvailabilitySlot(String staffUsername, LocalDateTime startDateTime, LocalDateTime endDateTime, String tenantId) {
+    public AvailabilitySlot(
+            String staffUsername,
+            LocalDateTime startDateTime,
+            LocalDateTime endDateTime,
+            String tenantId) {
         this.id = UUID.randomUUID().toString();
         this.staffUsername = staffUsername;
         this.startDateTime = startDateTime;
@@ -20,22 +24,51 @@ public class AvailabilitySlot {
         this.tenantId = tenantId;
     }
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String getId() {
+        return id;
+    }
 
-    public String getStaffUsername() { return staffUsername; }
-    public void setStaffUsername(String staffUsername) { this.staffUsername = staffUsername; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public LocalDateTime getStartDateTime() { return startDateTime; }
-    public void setStartDateTime(LocalDateTime startDateTime) { this.startDateTime = startDateTime; }
+    public String getStaffUsername() {
+        return staffUsername;
+    }
 
-    public LocalDateTime getEndDateTime() { return endDateTime; }
-    public void setEndDateTime(LocalDateTime endDateTime) { this.endDateTime = endDateTime; }
+    public void setStaffUsername(String staffUsername) {
+        this.staffUsername = staffUsername;
+    }
 
-    public boolean isBooked() { return isBooked; }
-    public void setBooked(boolean booked) { isBooked = booked; }
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
+    }
 
-    public String getTenantId() { return tenantId; }
-    public void setTenantId(String tenantId) { this.tenantId = tenantId; }
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
+    }
+
+    public LocalDateTime getEndDateTime() {
+        return endDateTime;
+    }
+
+    public void setEndDateTime(LocalDateTime endDateTime) {
+        this.endDateTime = endDateTime;
+    }
+
+    public boolean isBooked() {
+        return isBooked;
+    }
+
+    public void setBooked(boolean booked) {
+        isBooked = booked;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
 }
-

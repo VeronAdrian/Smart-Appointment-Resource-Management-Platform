@@ -33,7 +33,7 @@ A comprehensive multi-tenant platform for managing appointments, staff schedules
 - **Backend**: Java 21+, Spring Boot 3.2.5, Spring Security
 - **UI**: Vaadin 24.3.6 (100% Java, no JavaScript required)
 - **Build**: Maven (multi-module project)
-- **Storage**: In-memory (demo-ready, easily migratable to PostgreSQL)
+- **Storage**: H2 In-Memory Database (JPA) & Elasticsearch (Docker)
 
 ## 📁 Project Structure
 
@@ -58,22 +58,27 @@ smart-platform-parent/
 
 ### Setup & Run
 
-1. **Navigate to user-service:**
+1. **Start Infrastructure:**
+   ```bash
+   docker-compose up -d
+   ```
+
+2. **Navigate to user-service:**
    ```bash
    cd smart-platform-parent/user-service
    ```
 
-2. **Build and run:**
+3. **Build and run:**
    ```bash
    mvn clean install
    mvn spring-boot:run
    ```
 
-3. **Access the application:**
+4. **Access the application:**
    - Open [http://localhost:8080](http://localhost:8080) in your browser
    - You'll be redirected to Spring Security login page
 
-4. **Test Credentials:**
+5. **Test Credentials:**
    - **Super Admin**: `super` / `super` (can manage all tenants)
    - **Admin**: `admin` / `admin` (full admin rights within tenant)
    - **Staff**: `staff` / `staff` (can create availability slots, approve reservations)

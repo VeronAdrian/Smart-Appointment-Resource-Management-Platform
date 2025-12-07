@@ -2,12 +2,9 @@ package com.smartplatform.user.model.dto;
 
 import java.time.LocalDateTime;
 
-/**
- * DTO for slot recommendations
- * Contains information about recommended appointment slots
- */
+/** DTO for slot recommendations Contains information about recommended appointment slots */
 public class SlotRecommendation {
-    
+
     private String slotId;
     private String staffUsername;
     private LocalDateTime startTime;
@@ -21,9 +18,14 @@ public class SlotRecommendation {
 
     public SlotRecommendation() {}
 
-    public SlotRecommendation(String slotId, String staffUsername, LocalDateTime startTime,
-                             LocalDateTime endTime, int durationMinutes, double recommendationScore,
-                             String reason) {
+    public SlotRecommendation(
+            String slotId,
+            String staffUsername,
+            LocalDateTime startTime,
+            LocalDateTime endTime,
+            int durationMinutes,
+            double recommendationScore,
+            String reason) {
         this.slotId = slotId;
         this.staffUsername = staffUsername;
         this.startTime = startTime;
@@ -36,33 +38,83 @@ public class SlotRecommendation {
     }
 
     // Getters and Setters
-    public String getSlotId() { return slotId; }
-    public void setSlotId(String slotId) { this.slotId = slotId; }
+    public String getSlotId() {
+        return slotId;
+    }
 
-    public String getStaffUsername() { return staffUsername; }
-    public void setStaffUsername(String staffUsername) { this.staffUsername = staffUsername; }
+    public void setSlotId(String slotId) {
+        this.slotId = slotId;
+    }
 
-    public LocalDateTime getStartTime() { return startTime; }
-    public void setStartTime(LocalDateTime startTime) { this.startTime = startTime; }
+    public String getStaffUsername() {
+        return staffUsername;
+    }
 
-    public LocalDateTime getEndTime() { return endTime; }
-    public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
+    public void setStaffUsername(String staffUsername) {
+        this.staffUsername = staffUsername;
+    }
 
-    public int getDurationMinutes() { return durationMinutes; }
-    public void setDurationMinutes(int durationMinutes) { this.durationMinutes = durationMinutes; }
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
 
-    public double getRecommendationScore() { return recommendationScore; }
-    public void setRecommendationScore(double recommendationScore) { this.recommendationScore = recommendationScore; }
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
 
-    public String getReason() { return reason; }
-    public void setReason(String reason) { this.reason = reason; }
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
 
-    public int getStaffAvgRating() { return staffAvgRating; }
-    public void setStaffAvgRating(int staffAvgRating) { this.staffAvgRating = staffAvgRating; }
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
 
-    public int getAvailableSlots() { return availableSlots; }
-    public void setAvailableSlots(int availableSlots) { this.availableSlots = availableSlots; }
+    public int getDurationMinutes() {
+        return durationMinutes;
+    }
 
-    public String getStaffSpecialties() { return staffSpecialties; }
-    public void setStaffSpecialties(String staffSpecialties) { this.staffSpecialties = staffSpecialties; }
+    public void setDurationMinutes(int durationMinutes) {
+        this.durationMinutes = durationMinutes;
+    }
+
+    public double getRecommendationScore() {
+        return recommendationScore;
+    }
+
+    public void setRecommendationScore(double recommendationScore) {
+        this.recommendationScore = recommendationScore;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public int getStaffAvgRating() {
+        return staffAvgRating;
+    }
+
+    public void setStaffAvgRating(int staffAvgRating) {
+        this.staffAvgRating = staffAvgRating;
+    }
+
+    public int getAvailableSlots() {
+        return availableSlots;
+    }
+
+    public void setAvailableSlots(int availableSlots) {
+        this.availableSlots = availableSlots;
+    }
+
+    public String getStaffSpecialties() {
+        return staffSpecialties;
+    }
+
+    public void setStaffSpecialties(String staffSpecialties) {
+        this.staffSpecialties = staffSpecialties;
+    }
 }

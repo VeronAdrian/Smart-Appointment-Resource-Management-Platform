@@ -11,7 +11,12 @@ public class Resource {
     private int maxReservationHours;
     private String tenantId; // Multi-tenancy: discriminator column
 
-    public Resource(String name, String type, String description, int maxReservationHours, String tenantId) {
+    public Resource(
+            String name,
+            String type,
+            String description,
+            int maxReservationHours,
+            String tenantId) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.type = type;
@@ -21,25 +26,59 @@ public class Resource {
         this.tenantId = tenantId;
     }
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
+    public String getName() {
+        return name;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public boolean isAvailable() { return isAvailable; }
-    public void setAvailable(boolean available) { isAvailable = available; }
+    public String getType() {
+        return type;
+    }
 
-    public int getMaxReservationHours() { return maxReservationHours; }
-    public void setMaxReservationHours(int maxReservationHours) { this.maxReservationHours = maxReservationHours; }
+    public void setType(String type) {
+        this.type = type;
+    }
 
-    public String getTenantId() { return tenantId; }
-    public void setTenantId(String tenantId) { this.tenantId = tenantId; }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+
+    public int getMaxReservationHours() {
+        return maxReservationHours;
+    }
+
+    public void setMaxReservationHours(int maxReservationHours) {
+        this.maxReservationHours = maxReservationHours;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
 }
-

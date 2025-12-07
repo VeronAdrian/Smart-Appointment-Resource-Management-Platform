@@ -17,8 +17,15 @@ public class ResourceReservation {
     private String approvedBy; // Admin/Staff who approved
     private String tenantId; // Multi-tenancy: discriminator column
 
-    public ResourceReservation(String resourceId, String resourceName, String userId, String userName, 
-                               LocalDateTime startDateTime, LocalDateTime endDateTime, String priority, String tenantId) {
+    public ResourceReservation(
+            String resourceId,
+            String resourceName,
+            String userId,
+            String userName,
+            LocalDateTime startDateTime,
+            LocalDateTime endDateTime,
+            String priority,
+            String tenantId) {
         this.id = UUID.randomUUID().toString();
         this.resourceId = resourceId;
         this.resourceName = resourceName;
@@ -33,40 +40,99 @@ public class ResourceReservation {
         this.tenantId = tenantId;
     }
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String getId() {
+        return id;
+    }
 
-    public String getResourceId() { return resourceId; }
-    public void setResourceId(String resourceId) { this.resourceId = resourceId; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public String getResourceName() { return resourceName; }
-    public void setResourceName(String resourceName) { this.resourceName = resourceName; }
+    public String getResourceId() {
+        return resourceId;
+    }
 
-    public String getUserId() { return userId; }
-    public void setUserId(String userId) { this.userId = userId; }
+    public void setResourceId(String resourceId) {
+        this.resourceId = resourceId;
+    }
 
-    public String getUserName() { return userName; }
-    public void setUserName(String userName) { this.userName = userName; }
+    public String getResourceName() {
+        return resourceName;
+    }
 
-    public LocalDateTime getStartDateTime() { return startDateTime; }
-    public void setStartDateTime(LocalDateTime startDateTime) { this.startDateTime = startDateTime; }
+    public void setResourceName(String resourceName) {
+        this.resourceName = resourceName;
+    }
 
-    public LocalDateTime getEndDateTime() { return endDateTime; }
-    public void setEndDateTime(LocalDateTime endDateTime) { this.endDateTime = endDateTime; }
+    public String getUserId() {
+        return userId;
+    }
 
-    public String getPriority() { return priority; }
-    public void setPriority(String priority) { this.priority = priority; }
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public String getUserName() {
+        return userName;
+    }
 
-    public String getNotes() { return notes; }
-    public void setNotes(String notes) { this.notes = notes; }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-    public String getApprovedBy() { return approvedBy; }
-    public void setApprovedBy(String approvedBy) { this.approvedBy = approvedBy; }
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
+    }
 
-    public String getTenantId() { return tenantId; }
-    public void setTenantId(String tenantId) { this.tenantId = tenantId; }
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
+    }
+
+    public LocalDateTime getEndDateTime() {
+        return endDateTime;
+    }
+
+    public void setEndDateTime(LocalDateTime endDateTime) {
+        this.endDateTime = endDateTime;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
 }
-

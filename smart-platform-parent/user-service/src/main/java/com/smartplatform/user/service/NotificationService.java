@@ -12,20 +12,29 @@ public class NotificationService {
         System.out.println("[SMS] Message: " + message);
     }
 
-    public static void notifyAppointmentBooked(String clientEmail, String clientPhone, String staffName, String appointmentTime) {
-        sendEmail(clientEmail, "Appointment Confirmed", 
-            "Your appointment with " + staffName + " is confirmed for " + appointmentTime);
+    public static void notifyAppointmentBooked(
+            String clientEmail, String clientPhone, String staffName, String appointmentTime) {
+        sendEmail(
+                clientEmail,
+                "Appointment Confirmed",
+                "Your appointment with " + staffName + " is confirmed for " + appointmentTime);
         if (clientPhone != null && !clientPhone.isEmpty()) {
             sendSMS(clientPhone, "Appointment confirmed: " + staffName + " at " + appointmentTime);
         }
     }
 
-    public static void notifyAppointmentCancelled(String clientEmail, String clientPhone, String staffName, String appointmentTime) {
-        sendEmail(clientEmail, "Appointment Cancelled", 
-            "Your appointment with " + staffName + " on " + appointmentTime + " has been cancelled.");
+    public static void notifyAppointmentCancelled(
+            String clientEmail, String clientPhone, String staffName, String appointmentTime) {
+        sendEmail(
+                clientEmail,
+                "Appointment Cancelled",
+                "Your appointment with "
+                        + staffName
+                        + " on "
+                        + appointmentTime
+                        + " has been cancelled.");
         if (clientPhone != null && !clientPhone.isEmpty()) {
             sendSMS(clientPhone, "Appointment cancelled: " + staffName + " at " + appointmentTime);
         }
     }
 }
-
